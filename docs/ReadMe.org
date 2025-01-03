@@ -1,0 +1,18 @@
+# -*- org -*-
+#+startup: show2levels
+
+* 编译
+
+#+BEGIN_SRC shell
+  #列出目标
+  /Users/chenlong/.local/bin/pio run --list-targets
+  #生成编译数据库文件
+  /Users/chenlong/.local/bin/pio run -t compiledb
+  /Users/chenlong/.local/bin/pio  run  -e  liubangF4 -v
+#+END_SRC
+
+* 工具
+- [[https://github.com/arkypita/LaserGRBL][激光雕刻]]
+- [[https://laserweb.github.io/LaserWeb4/][LaserWeb4]]
+- [[https://github.com/winder/Universal-G-Code-Sender?tab=readme-ov-file][Universal-G-Code-Sender]]  
+- [[https://manual.rotrics.com/v1.0-chinese/api_and_sdk_chn/ji-xie-bi-kong-zhi-xie-yi#ji-ben-wei-yi-zhi-ling][gcode协议]]

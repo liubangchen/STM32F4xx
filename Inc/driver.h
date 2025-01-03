@@ -178,6 +178,8 @@
   #include "boards/stm32f407vet6_dev_board.h"
 #elif defined(BOARD_MY_MACHINE)
   #include "boards/my_machine_map.h"
+#elif defined(BOARD_LIUBANG_F4)
+  #include "boards/liubangf4_map.h"
 #else // default board
   #include "boards/generic_map.h"
 #endif
