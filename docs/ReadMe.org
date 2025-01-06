@@ -9,6 +9,7 @@
   #生成编译数据库文件
   /Users/chenlong/.local/bin/pio run -t compiledb
   /Users/chenlong/.local/bin/pio  run  -e  liubangF4 -v
+  git submodule update --remote
 #+END_SRC
 
 * 工具

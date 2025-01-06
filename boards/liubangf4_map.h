@@ -1,5 +1,5 @@
 /*
-  driver code for STM32F407 ARM processors
+  btt_skr_2.0_map.h - driver code for STM32F407 ARM processors
 
   Part of grblHAL
 
@@ -29,7 +29,7 @@
 #error "This board has a STM32F407 or STM32F429 processor with a 8MHz crystal, select a corresponding build!"
 #endif
 
-#define BOARD_NAME "STM32F407"
+#define BOARD_NAME "liubang-f407"
 #define BOARD_URL ""
 
 #define SERIAL_PORT     1   // GPIOA: TX = 9, RX = 10
@@ -50,21 +50,21 @@
 
 // Define step pulse output pins.
 #define X_STEP_PORT                 GPIOE
-#define X_STEP_PIN                  2                   // X
+#define X_STEP_PIN                  5                   // X
 #define Y_STEP_PORT                 GPIOD
-#define Y_STEP_PIN                  5                   // Y
+#define Y_STEP_PIN                  11                   // Y
 #define Z_STEP_PORT                 GPIOA
-#define Z_STEP_PIN                  15                  // Z
+#define Z_STEP_PIN                  2                  // Z
 #define STEP_OUTMODE                GPIO_BITBAND
 //#define STEP_PINMODE                PINMODE_OD // Uncomment for open drain outputs
 
 // Define step direction output pins.
 #define X_DIRECTION_PORT            GPIOE
-#define X_DIRECTION_PIN             1
+#define X_DIRECTION_PIN             6
 #define Y_DIRECTION_PORT            GPIOD
-#define Y_DIRECTION_PIN             4
+#define Y_DIRECTION_PIN             12
 #define Z_DIRECTION_PORT            GPIOA
-#define Z_DIRECTION_PIN             8
+#define Z_DIRECTION_PIN             3
 #define DIRECTION_OUTMODE           GPIO_BITBAND
 //#define DIRECTION_PINMODE           PINMODE_OD // Uncomment for open drain outputs
 
@@ -72,9 +72,9 @@
 #define X_ENABLE_PORT               GPIOE
 #define X_ENABLE_PIN                7
 #define Y_ENABLE_PORT               GPIOD
-#define Y_ENABLE_PIN                6
+#define Y_ENABLE_PIN                13
 #define Z_ENABLE_PORT               GPIOD
-#define Z_ENABLE_PIN                1
+#define Z_ENABLE_PIN                14
 //#define STEPPERS_ENABLE_PINMODE   PINMODE_OD // Uncomment for open drain outputs
 
 // Define homing/hard limit switch input pins.
@@ -115,6 +115,7 @@
 #define M4_ENABLE_PIN               13
 #endif
 
+
 #define AUXOUTPUT0_PORT             GPIOB // Spindle PWM, EXP1 pin 2
 #define AUXOUTPUT0_PIN              0
 // Alt. spindle PWM output, comment out definitions above and uncomment these to change:
@@ -141,22 +142,22 @@
 
 // Define flood and mist coolant enable output pins.
 #define COOLANT_FLOOD_PORT          GPIOB
-#define COOLANT_FLOOD_PIN           3                           // HEAT0
+#define COOLANT_FLOOD_PIN           10                           // HEAT0
 #define COOLANT_MIST_PORT           GPIOB
-#define COOLANT_MIST_PIN            4                           // HEAT1
+#define COOLANT_MIST_PIN            11                           // HEAT1
 
 // Define user-control controls (cycle start, reset, feed hold) input pins.
 // These are all available on EXP2 along with electrical RESET* (EXP2-8)
 #define CONTROL_PORT                GPIOE
-#define RESET_PIN                   3                           // Exp2-4
-#define FEED_HOLD_PIN               4                           // Exp2-2
+#define RESET_PIN                   4                           // Exp2-4
+#define FEED_HOLD_PIN               5                           // Exp2-2
 #define CYCLE_START_PIN             6                           // Exp2-1
 #define CONTROL_INMODE              GPIO_BITBAND
 
 #define AUXINPUT0_PORT              GPIOA
-#define AUXINPUT0_PIN               7                           // EXP2-6
+#define AUXINPUT0_PIN               8                           // EXP2-6
 #define AUXINPUT1_PORT              GPIOE
-#define AUXINPUT1_PIN               8                           // BLTouch PE4
+#define AUXINPUT1_PIN               7                           // BLTouch PE4
 
 #if PROBE_ENABLE
 #define PROBE_PORT                  AUXINPUT1_PORT
