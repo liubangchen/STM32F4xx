@@ -116,12 +116,15 @@
 #define Z_LIMIT_PIN             13
 #define LIMIT_INMODE            GPIO_BITBAND
 
-#ifdef BOARD_LONGBOARD32
-
 // Define ganged axis or A axis step pulse and step direction output pins.
 // Note that because of how grblHAL iterates the axes, the M3 and M4 need to swap
-// TODO: use standard assignment for SLB EXT?
-#if (N_ABC_MOTORS == 1) && (N_AXIS == 4)
+
+#ifdef BOARD_LONGBOARD32
+
+#if N_GANGED && N_AXIS == 4
+
+#define TRINAMIC_MIXED_DRIVERS  1
+#define TRINAMIC_DRIVER_MASK    0b111
 
 #define M3_AVAILABLE
 #define M3_STEP_PORT            GPIOB
@@ -139,8 +142,10 @@
 #define M4_STEP_PIN             5
 #define M4_DIRECTION_PORT       GPIOE
 #define M4_DIRECTION_PIN        10
+#ifndef Y_GANGED
 #define M4_ENABLE_PORT          GPIOC
 #define M4_ENABLE_PIN           7
+#endif
 #define M4_LIMIT_PORT           GPIOE
 #define M4_LIMIT_PIN            6
 #define M4_HOME_PORT            GPIOA
@@ -164,6 +169,10 @@
 #endif
 
 #if N_ABC_MOTORS == 2
+
+#define TRINAMIC_MIXED_DRIVERS  1
+#define TRINAMIC_DRIVER_MASK    0b1111
+
 #define M4_AVAILABLE
 #define M4_STEP_PORT            GPIOB
 #define M4_STEP_PIN             10
@@ -173,10 +182,39 @@
 #define M4_ENABLE_PIN           10
 #define M4_LIMIT_PORT           GPIOE
 #define M4_LIMIT_PIN            14
+#else
+#define TRINAMIC_MIXED_DRIVERS  0
 #endif
+
 #endif
 
 #else // SLB EXT
+
+#if N_GANGED && N_AXIS == 4
+
+#define M3_AVAILABLE
+#define M3_STEP_PORT            GPIOB
+#define M3_STEP_PIN             10
+#define M3_DIRECTION_PORT       GPIOE
+#define M3_DIRECTION_PIN        11
+#define M3_ENABLE_PORT          GPIOC
+#define M3_ENABLE_PIN           10
+#define M3_LIMIT_PORT           GPIOE
+#define M3_LIMIT_PIN            14
+
+#define M4_AVAILABLE
+#define M4_STEP_PORT            GPIOE
+#define M4_STEP_PIN             5
+#define M4_DIRECTION_PORT       GPIOE
+#define M4_DIRECTION_PIN        10
+#ifndef Y_GANGED
+#define M4_ENABLE_PORT          GPIOC
+#define M4_ENABLE_PIN           7
+#endif
+#define M4_LIMIT_PORT           GPIOE
+#define M4_LIMIT_PIN            6
+
+#else
 
 #if N_ABC_MOTORS > 0
 #define M3_AVAILABLE
@@ -188,8 +226,6 @@
 #define M3_LIMIT_PIN            6
 #define M3_ENABLE_PORT          GPIOC
 #define M3_ENABLE_PIN           7
-#define M3_MOTOR_FAULT_PORT     GPIOA
-#define M3_MOTOR_FAULT_PIN      3
 #endif
 
 #if N_ABC_MOTORS == 2
@@ -200,23 +236,21 @@
 #define M4_DIRECTION_PIN        11
 #define M4_ENABLE_PORT          GPIOC
 #define M4_ENABLE_PIN           10
-#define M4_LIMIT_PORT           GPIOE
-#define M4_LIMIT_PIN            14
-#define M4_MOTOR_FAULT_PORT     GPIOD
-#define M4_MOTOR_FAULT_PIN      2
+#endif
+
 #endif
 
 #endif
 
 //*****Switchbank will always claim the first 4 aux outputs******
-#define AUXOUTPUT0_PORT         GPIOC
-#define AUXOUTPUT0_PIN          14
-#define AUXOUTPUT1_PORT         GPIOC
-#define AUXOUTPUT1_PIN          0
-#define AUXOUTPUT2_PORT         GPIOC
-#define AUXOUTPUT2_PIN          1
 #define AUXOUTPUT3_PORT         GPIOC
-#define AUXOUTPUT3_PIN          8
+#define AUXOUTPUT3_PIN          14
+#define AUXOUTPUT2_PORT         GPIOC
+#define AUXOUTPUT2_PIN          0
+#define AUXOUTPUT1_PORT         GPIOC
+#define AUXOUTPUT1_PIN          1
+#define AUXOUTPUT0_PORT         GPIOC
+#define AUXOUTPUT0_PIN          8
 #define AUXOUTPUT4_PORT         GPIOB // Modbus direction
 #define AUXOUTPUT4_PIN          0
 
@@ -354,14 +388,13 @@
 #define AUXINPUT12_PORT         GPIOD // External stepper driver alarm (A) or spindle encoder pulse
 #define AUXINPUT12_PIN          2
 
-#if N_AXIS > 2
-#undef MOTOR_FAULT_ENABLE
+#if MOTOR_FAULT_ENABLE && ((N_GANGED && N_AXIS == 4) || N_AXIS == 5)
 #define MOTOR_FAULT_ENABLE      1
 #define MOTOR_FAULT_PORT        AUXINPUT12_PORT
 #define MOTOR_FAULT_PIN         AUXINPUT12_PIN
 #endif
 
-#define TMC_STEALTHCHOP 0
+#define TMC_STEALTHCHOP         0
 
 #define X_HOME_PORT             GPIOA
 #define X_HOME_PIN              15
