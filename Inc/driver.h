@@ -180,6 +180,8 @@
   #include "boards/my_machine_map.h"
 #elif defined(BOARD_LIUBANG_F4)
   #include "boards/liubangf4_map.h"
+#elif  defined(BOARD_MKS_V31)
+  #include "boards/mks_v31.h"
 #else // default board
   #include "boards/generic_map.h"
 #endif
