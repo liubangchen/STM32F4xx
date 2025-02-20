@@ -36,3 +36,7 @@ build
 .vscode/settings.json
 .vscode/c_cpp_properties.json
 *.code-workspace
+.aider*
+.ccls-cache/
+.settings/
+.vscode/
