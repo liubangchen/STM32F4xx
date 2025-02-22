@@ -116,19 +116,29 @@
 #endif
 
 
-#define AUXOUTPUT0_PORT             GPIOA // Spindle PWM, EXP1 pin 2
-#define AUXOUTPUT0_PIN              0
+#define AUXOUTPUT0_PORT             GPIOE // Spindle PWM, EXP1 pin 2
+#define AUXOUTPUT0_PIN              5
 // Alt. spindle PWM output, comment out definitions above and uncomment these to change:
 //#define AUXOUTPUT0_PORT             GPIOE // Spindle PWM, SERVOS pin 1
 //#define AUXOUTPUT0_PIN              5
-#define AUXOUTPUT1_PORT             GPIOC // Spindle direction, FAN2
+#define AUXOUTPUT1_PORT             GPIOC
 #define AUXOUTPUT1_PIN              14
-#define AUXOUTPUT2_PORT             GPIOB // Spindle enable, FAN1
+
+#define AUXOUTPUT2_PORT             GPIOB
 #define AUXOUTPUT2_PIN              1
 
 //#define DRIVER_SPINDLE_ENABLE 1
 //#define SPINDLE_PWM 1
 //#define SPINDLE_DIR 1
+
+#define SPINDLE_ENABLE_PORT         AUXOUTPUT2_PORT
+#define SPINDLE_ENABLE_PIN          AUXOUTPUT2_PIN
+
+#define SPINDLE_PWM_PORT            AUXOUTPUT0_PORT
+#define SPINDLE_PWM_PIN             AUXOUTPUT0_PIN
+
+#define SPINDLE_DIRECTION_PORT      AUXOUTPUT1_PORT
+#define SPINDLE_DIRECTION_PIN       AUXOUTPUT1_PIN
 
 // Define driver spindle pins
 #if DRIVER_SPINDLE_ENABLE
@@ -153,9 +163,9 @@
 // Define user-control controls (cycle start, reset, feed hold) input pins.
 // These are all available on EXP2 along with electrical RESET* (EXP2-8)
 #define CONTROL_PORT                GPIOE
-#define RESET_PIN                   4                           // Exp2-4
-#define FEED_HOLD_PIN               5                           // Exp2-2
-#define CYCLE_START_PIN             6                           // Exp2-1
+//#define RESET_PIN                   4                           // Exp2-4
+//#define FEED_HOLD_PIN               5                           // Exp2-2
+//#define CYCLE_START_PIN             6                           // Exp2-1
 #define CONTROL_INMODE              GPIO_BITBAND
 
 #define AUXINPUT0_PORT              GPIOA
@@ -179,8 +189,8 @@
 #endif
 
 // Safe Power Control
-#define STEPPERS_POWER_PORT         GPIOC
-#define STEPPERS_POWER_PIN          13
+//#define STEPPERS_POWER_PORT         GPIOC
+//#define STEPPERS_POWER_PIN          13
 
 #if SDCARD_ENABLE
 #define SDCARD_SDIO                 1
@@ -202,12 +212,12 @@
 #undef TRINAMIC_UART_ENABLE
 #define TRINAMIC_UART_ENABLE        2
 
-#define MOTOR_UARTX_PORT            GPIOE
-#define MOTOR_UARTX_PIN             0
+#define MOTOR_UARTX_PORT            GPIOD
+#define MOTOR_UARTX_PIN             5
 #define MOTOR_UARTY_PORT            GPIOD
-#define MOTOR_UARTY_PIN             3
+#define MOTOR_UARTY_PIN             7
 #define MOTOR_UARTZ_PORT            GPIOD
-#define MOTOR_UARTZ_PIN             0
+#define MOTOR_UARTZ_PIN             4
 
 #ifdef  M3_AVAILABLE
 #define MOTOR_UARTM3_PORT           GPIOC
