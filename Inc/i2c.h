@@ -65,7 +65,7 @@ void i2c_init (void);
 bool i2c_probe (uint_fast16_t i2c_address);
 bool i2c_send (uint_fast16_t i2cAddr, uint8_t *buf, size_t size, bool block);
 bool i2c_receive (uint_fast16_t i2cAddr, uint8_t *buf, size_t size, bool block);
-void i2c_get_keycode (uint_fast16_t i2cAddr, keycode_callback_ptr callback);
+bool i2c_get_keycode (i2c_address_t i2cAddr, keycode_callback_ptr callback);
 
 #endif // I2C_ENABLE
 #endif // __I2C_DRIVER_H__

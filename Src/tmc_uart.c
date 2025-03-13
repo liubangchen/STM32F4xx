@@ -442,7 +442,7 @@ static void if_init (uint8_t motors, axes_signals_t enabled)
         TMC_UART_TIMER->CR1 &= ~TIM_CR1_CEN;
         TMC_UART_TIMER->SR &= ~TIM_SR_UIF;
         TMC_UART_TIMER->CNT = 0;
-        TMC_UART_TIMER->ARR = (timer_clock_freq / SWS_BAUDRATE) & 0xFFFFFFFE;
+        TMC_UART_TIMER->ARR = 728;//(timer_clock_freq / SWS_BAUDRATE) & 0xFFFFFFFE;
         TMC_UART_TIMER->CR1 |= TIM_CR1_UDIS|TIM_CR1_ARPE|TIM_CR1_CEN;   // Disable update events and enable timer
         TMC_UART_TIMER->DIER |= TIM_DIER_UIE;
 
@@ -483,5 +483,3 @@ void TMC_UART_IRQHandler (void)
 }
 
 #endif // TRINAMIC_UART_ENABLE == 2
-
-

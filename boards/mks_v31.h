@@ -116,7 +116,7 @@
 #endif
 
 
-#define AUXOUTPUT0_PORT             GPIOE // Spindle PWM, EXP1 pin 2
+#define AUXOUTPUT0_PORT             GPIOE // 挤出头0 Spindle PWM, EXP1 pin 2
 #define AUXOUTPUT0_PIN              5
 // Alt. spindle PWM output, comment out definitions above and uncomment these to change:
 //#define AUXOUTPUT0_PORT             GPIOE // Spindle PWM, SERVOS pin 1
@@ -124,8 +124,8 @@
 #define AUXOUTPUT1_PORT             GPIOC
 #define AUXOUTPUT1_PIN              14
 
-#define AUXOUTPUT2_PORT             GPIOB
-#define AUXOUTPUT2_PIN              1
+#define AUXOUTPUT2_PORT             GPIOA   //热床PA0
+#define AUXOUTPUT2_PIN              0
 
 //#define DRIVER_SPINDLE_ENABLE 1
 //#define SPINDLE_PWM 1
@@ -193,7 +193,11 @@
 //#define STEPPERS_POWER_PIN          13
 
 #if SDCARD_ENABLE
-#define SDCARD_SDIO                 1
+#define SDCARD_SDIO                 0
+
+#define SD_CS_PORT GPIOC
+#define SD_CS_PIN 9
+#define SPI_PORT 3
 #endif
 
 #if ETHERNET_ENABLE

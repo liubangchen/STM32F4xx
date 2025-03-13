@@ -144,6 +144,58 @@ I2C_HandleTypeDef *I2C_GetPort (void)
 static uint8_t keycode = 0;
 static keycode_callback_ptr keypad_callback = NULL;
 
+i2c_cap_t i2c_start (void)
+{
+    static i2c_cap_t cap = {};
+
+    if(cap.started)
+        return cap;
+
+    GPIO_InitTypeDef GPIO_InitStruct = {
+        .Pin = (1 << I2C_SCL_PIN)|(1 << I2C_SDA_PIN),
+        .Mode = GPIO_MODE_AF_OD,
+        .Pull = GPIO_PULLUP,
+        .Speed = GPIO_SPEED_FREQ_VERY_HIGH,
+        .Alternate = I2C_GPIO_AF
+    };
+    HAL_GPIO_Init(I2C_GPIO, &GPIO_InitStruct);
+
+    I2C_CLKENA();
+
+#ifdef I2C_FASTMODE
+    HAL_FMPI2C_Init(&i2c_port);
+    HAL_FMPI2CEx_ConfigAnalogFilter(&i2c_port, FMPI2C_ANALOGFILTER_ENABLE);
+#else
+    HAL_I2C_Init(&i2c_port);
+#endif
+
+    HAL_NVIC_EnableIRQ(I2C_IRQEVT);
+    HAL_NVIC_EnableIRQ(I2C_IRQERR);
+
+    static const periph_pin_t scl = {
+        .function = Output_SCK,
+        .group = PinGroup_I2C,
+        .port = I2C_GPIO,
+        .pin = I2C_SCL_PIN,
+        .mode = { .mask = PINMODE_OD }
+    };
+
+    static const periph_pin_t sda = {
+        .function = Bidirectional_SDA,
+        .group = PinGroup_I2C,
+        .port = I2C_GPIO,
+        .pin = I2C_SDA_PIN,
+        .mode = { .mask = PINMODE_OD }
+    };
+
+    hal.periph_port.register_pin(&scl);
+    hal.periph_port.register_pin(&sda);
+
+    cap.started = cap.tx_non_blocking = On;
+
+    return cap;
+}
+
 void i2c_init (void)
 {
     static bool init_ok = false;
@@ -249,12 +301,13 @@ bool i2c_receive (uint_fast16_t i2cAddr, uint8_t *buf, size_t size, bool block)
     return ok;
 }
 
-void i2c_get_keycode (uint_fast16_t i2cAddr, keycode_callback_ptr callback)
+bool i2c_get_keycode (i2c_address_t i2cAddr, keycode_callback_ptr callback)
 {
     keycode = 0;
     keypad_callback = callback;
 
-    I2C_Master_Receive_IT(&i2c_port, i2cAddr << 1, &keycode, 1);
+    bool ok=I2C_Master_Receive_IT(&i2c_port, i2cAddr << 1, &keycode, 1);
+    return ok;
 }
 
 void I2C_IRQEVT_Handler (void)
@@ -273,7 +326,7 @@ nvs_transfer_result_t i2c_nvs_transfer (nvs_transfer_t *i2c, bool read)
 {
     while (I2C_GetState(&i2c_port) != I2C_STATE_READY) {
         if(!hal.stream_blocking_callback())
-            return NVS_TransferResult_Failed;
+            return false;
     }
 
     //    while (HAL_I2C_IsDeviceReady(&i2c_port, (uint16_t)(0xA0), 3, 100) != HAL_OK);
@@ -289,7 +342,7 @@ nvs_transfer_result_t i2c_nvs_transfer (nvs_transfer_t *i2c, bool read)
     }
     i2c->data += i2c->count;
 
-    return ret == HAL_OK ? NVS_TransferResult_OK : NVS_TransferResult_Failed;
+    return ret == HAL_OK ? NVS_TransferResult_OK : false;
 }
 
 #endif // EEPROM_ENABLE
